@@ -3,752 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Tab</title>
+    <title>Simple Start</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg-color: #020617;
+            --accent-color: #6366f1;
         }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0a;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(74, 86, 226, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, rgba(255, 100, 200, 0.2) 0%, transparent 40%);
-            animation: float 15s ease-in-out infinite;
-            filter: blur(80px);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, -30px) scale(1.1); }
-        }
-
-        body::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
-            opacity: 0.5;
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .time-section {
-            text-align: center;
-            margin-bottom: 70px;
-            color: white;
-            animation: fadeIn 1s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .time {
-            font-size: 120px;
-            font-weight: 200;
-            margin-bottom: 5px;
-            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -4px;
-            line-height: 1.1;
-        }
-
-        .date {
-            font-size: 18px;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .greeting {
-            font-size: 28px;
-            margin-bottom: 25px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.95);
-            letter-spacing: -0.5px;
-        }
-
-        .search-container {
-            margin-bottom: 60px;
-            display: flex;
-            justify-content: center;
-            animation: fadeIn 1s ease-out 0.2s backwards;
-        }
-
-        .search-box {
-            width: 100%;
-            max-width: 680px;
-            padding: 20px 32px;
-            font-size: 17px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-            color: white;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.08) 0px, transparent 50%);
+            color: #f8fafc;
             font-family: 'Inter', sans-serif;
-        }
-
-        .search-box::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .search-box:focus {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 
-                0 12px 48px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                0 0 0 4px rgba(255, 255, 255, 0.05);
-            transform: translateY(-2px);
-        }
-
-        .shortcuts-section {
-            margin-bottom: 40px;
-            animation: fadeIn 1s ease-out 0.4s backwards;
-        }
-
-        .section-title {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .shortcuts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-
-        .shortcut {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 28px 20px;
-            text-decoration: none;
-            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            cursor: pointer;
-            position: relative;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
             overflow: hidden;
         }
-
-        .shortcut::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
+        .search-bar {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .shortcut:hover::before {
+        .search-bar:focus-within {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .shortcut {
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: transparent;
+            letter-spacing: 0.025em;
+        }
+        .shortcut:hover:not(.remove-mode) {
+            color: var(--accent-color);
             opacity: 1;
         }
-
-        .shortcut:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
-        }
-
-        .shortcut-icon {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-        }
-
-        .shortcut:hover .shortcut-icon {
-            transform: scale(1.1);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .shortcut-favicon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            object-fit: cover;
-            transition: all 0.3s;
-        }
-
-        .shortcut:hover .shortcut-favicon {
-            transform: scale(1.1);
-        }
-
-        .shortcut-name {
-            font-size: 14px;
-            font-weight: 500;
-            text-align: center;
-            word-break: break-word;
-            color: rgba(255, 255, 255, 0.95);
-            letter-spacing: -0.2px;
-        }
-
-        .shortcut-visits {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.4);
-            font-weight: 500;
-        }
-
-        .delete-btn {
+        .remove-btn {
+            display: none;
             position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(255, 50, 80, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            top: -6px;
+            right: -6px;
+            background: #ef4444;
             color: white;
-            width: 24px;
-            height: 24px;
             border-radius: 50%;
-            cursor: pointer;
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 14px;
-            line-height: 1;
-            display: flex;
+            width: 16px;
+            height: 16px;
+            font-size: 9px;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
             z-index: 10;
         }
-
-        .shortcut:hover .delete-btn {
-            opacity: 1;
-        }
-
-        .delete-btn:hover {
-            background: rgba(255, 30, 60, 1);
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(255, 50, 80, 0.4);
-        }
-
-        .add-shortcut-btn {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 28px 20px;
-            color: rgba(255, 255, 255, 0.5);
+        .remove-mode .remove-btn {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px dashed rgba(255, 255, 255, 0.15);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
         }
-
-        .add-shortcut-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
+        .remove-mode {
+            animation: wiggle 0.3s ease-in-out infinite alternate;
         }
-
-        .add-shortcut-btn:hover::before {
-            opacity: 1;
+        @keyframes wiggle {
+            from { transform: rotate(-1deg); }
+            to { transform: rotate(1deg); }
         }
-
-        .add-shortcut-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: rgba(255, 255, 255, 0.8);
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .add-icon {
-            font-size: 42px;
-            line-height: 1;
-            font-weight: 300;
-        }
-
-        .modal {
+        #settings-panel {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease-out;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.9);
         }
-
-        .modal.active {
-            display: flex;
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
         }
-
-        .modal-content {
-            background: linear-gradient(135deg, rgba(30, 30, 40, 0.95) 0%, rgba(20, 20, 30, 0.95) 100%);
-            backdrop-filter: blur(40px);
-            padding: 48px;
-            border-radius: 24px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 
-                0 24px 80px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
-            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-title {
-            font-size: 28px;
-            margin-bottom: 32px;
-            color: white;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 500;
-            font-size: 14px;
-            letter-spacing: 0.3px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 16px 18px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .form-group input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: rgba(120, 119, 198, 0.6);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 
-                0 0 0 4px rgba(120, 119, 198, 0.1),
-                0 8px 24px rgba(0, 0, 0, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            margin-top: 36px;
-        }
-
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #7877c6 0%, #5a59a8 100%);
-            color: white;
-            box-shadow: 0 4px 16px rgba(120, 119, 198, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #8887d7 0%, #6b6ab9 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(120, 119, 198, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
-            color: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        @media (max-width: 768px) {
-            .time {
-                font-size: 80px;
-                letter-spacing: -2px;
-            }
-
-            .date {
-                font-size: 14px;
-            }
-
-            .greeting {
-                font-size: 22px;
-            }
-
-            .search-box {
-                font-size: 16px;
-                padding: 18px 24px;
-            }
-
-            .shortcuts-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 12px;
-            }
-
-            .shortcut {
-                padding: 24px 16px;
-            }
-
-            .modal-content {
-                padding: 32px 24px;
-            }
-
-            .modal-title {
-                font-size: 24px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .time {
-                font-size: 64px;
-            }
-
-            .greeting {
-                font-size: 20px;
-            }
-
-            .shortcuts-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .ampm {
+            font-size: 0.35em;
+            margin-left: 0.1em;
+            font-weight: 200;
+            opacity: 0.6;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="time-section">
-            <div class="greeting" id="greeting"></div>
-            <div class="time" id="time"></div>
-            <div class="date" id="date"></div>
-        </div>
+<body class="p-4">
 
-        <div class="search-container">
-            <input type="text" class="search-box" id="searchBox" placeholder="Search Google or type a URL">
-        </div>
+    <!-- Settings Toggle -->
+    <div class="fixed top-6 right-6">
+        <button onclick="toggleSettings()" class="text-slate-600 hover:text-slate-300 transition-all hover:rotate-45 duration-500">
+            <i class="fa-solid fa-gear text-base"></i>
+        </button>
+    </div>
 
-        <div class="shortcuts-section">
-            <h2 class="section-title">Most Visited</h2>
-            <div class="shortcuts-grid" id="shortcutsGrid"></div>
+    <!-- Settings Panel -->
+    <div id="settings-panel" class="fixed top-16 right-6 p-5 rounded-xl border border-white/5 shadow-2xl z-50 w-56">
+        <h3 class="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-500 mb-4">Menu</h3>
+        <div class="flex flex-col gap-3">
+            <label class="flex items-center justify-between text-[11px] cursor-pointer group">
+                <span class="text-slate-400 group-hover:text-white transition-colors">24h Format</span>
+                <input type="checkbox" id="format-toggle" onchange="saveSettings()" class="w-3 h-3 rounded accent-indigo-500 bg-slate-700 border-none">
+            </label>
+            <div class="h-[1px] bg-white/5 my-1"></div>
+            <button onclick="toggleRemoveMode()" id="remove-mode-btn" class="flex items-center gap-2 text-[11px] text-slate-500 hover:text-red-400 transition-colors">
+                <i class="fa-solid fa-pen text-[9px]"></i>
+                <span id="remove-mode-text">Edit Shortcuts</span>
+            </button>
         </div>
     </div>
 
-    <div class="modal" id="addModal">
-        <div class="modal-content">
-            <h2 class="modal-title">Add Shortcut</h2>
-            <div class="form-group">
-                <label for="siteName">Name</label>
-                <input type="text" id="siteName" placeholder="e.g., YouTube">
+    <!-- Clock with AM/PM support -->
+    <div class="text-center mb-6 fade-in flex items-baseline">
+        <h1 id="clock" class="text-7xl font-thin tracking-tighter text-white/90">00:00</h1>
+        <span id="ampm" class="ampm text-white/90"></span>
+    </div>
+
+    <!-- Balanced Pill-Shaped Search Bar -->
+    <div class="w-full max-w-lg mb-10 fade-in" style="animation-delay: 0.15s">
+        <form id="search-form" action="https://www.google.com/search" method="GET">
+            <div class="search-bar flex items-center rounded-full px-6 py-3">
+                <i class="fa-solid fa-magnifying-glass text-slate-600 text-xs mr-4"></i>
+                <input 
+                    type="text" 
+                    name="q"
+                    placeholder="Search" 
+                    class="bg-transparent w-full outline-none text-base font-light placeholder:text-slate-700 text-slate-200"
+                    autocomplete="off"
+                    id="search-input"
+                >
             </div>
-            <div class="form-group">
-                <label for="siteUrl">URL</label>
-                <input type="url" id="siteUrl" placeholder="e.g., https://youtube.com">
-            </div>
-            <div class="modal-buttons">
-                <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
-                <button class="btn btn-primary" id="saveBtn">Save</button>
-            </div>
-        </div>
+        </form>
+    </div>
+
+    <!-- Shortcuts -->
+    <div id="shortcuts-container" class="flex flex-wrap justify-center items-center gap-5 text-[13px] font-normal text-slate-500 fade-in" style="animation-delay: 0.3s">
+        <button onclick="addLink()" id="add-btn" class="px-2 py-1 rounded opacity-40 hover:opacity-100 transition-opacity">
+            <i class="fa-solid fa-plus text-[8px] mr-1"></i> Add
+        </button>
     </div>
 
     <script>
-        // Initialize data structure
-        let visitData = JSON.parse(localStorage.getItem('visitData')) || {};
-        let manualShortcuts = JSON.parse(localStorage.getItem('manualShortcuts')) || [];
+        let isRemoveMode = false;
+        let shortcuts = JSON.parse(localStorage.getItem('myShortcuts')) || [
+            { name: 'YouTube', url: 'https://youtube.com' },
+            { name: 'Gmail', url: 'https://gmail.com' },
+            { name: 'Reddit', url: 'https://reddit.com' },
+            { name: 'GitHub', url: 'https://github.com' }
+        ];
 
-        // Time and date display
-        function updateTime() {
+        function init() {
+            renderShortcuts();
+            const is24h = localStorage.getItem('clockFormat') === 'true';
+            document.getElementById('format-toggle').checked = is24h;
+            updateClock();
+            setInterval(updateClock, 1000);
+            document.getElementById('search-input').focus();
+        }
+
+        function updateClock() {
             const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('time').textContent = `${hours}:${minutes}`;
-
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
-        }
-
-        // Greeting based on time
-        function updateGreeting() {
-            const hour = new Date().getHours();
-            let greeting = 'Good Evening';
-            if (hour < 12) greeting = 'Good Morning';
-            else if (hour < 18) greeting = 'Good Afternoon';
-            document.getElementById('greeting').textContent = greeting;
-        }
-
-        // Track current page visit
-        function trackVisit() {
-            const currentUrl = window.location.href;
-            if (currentUrl.includes('file://') || currentUrl.includes('start-page.html')) return;
-
-            const domain = new URL(currentUrl).hostname.replace('www.', '');
-            if (!visitData[domain]) {
-                visitData[domain] = { count: 0, lastVisit: Date.now(), url: currentUrl };
-            }
-            visitData[domain].count++;
-            visitData[domain].lastVisit = Date.now();
-            localStorage.setItem('visitData', JSON.stringify(visitData));
-        }
-
-        // Get favicon URL
-        function getFaviconUrl(url) {
-            try {
-                const domain = new URL(url).origin;
-                return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
-            } catch {
-                return null;
-            }
-        }
-
-        // Get initials from name
-        function getInitials(name) {
-            return name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
-        }
-
-        // Render shortcuts
-        function renderShortcuts() {
-            const grid = document.getElementById('shortcutsGrid');
-            grid.innerHTML = '';
-
-            // Combine and sort all shortcuts
-            const autoShortcuts = Object.entries(visitData)
-                .map(([domain, data]) => ({
-                    name: domain,
-                    url: data.url,
-                    visits: data.count,
-                    auto: true
-                }))
-                .sort((a, b) => b.visits - a.visits)
-                .slice(0, 8);
-
-            const allShortcuts = [...manualShortcuts, ...autoShortcuts];
-            const uniqueShortcuts = [];
-            const seenDomains = new Set();
-
-            for (const shortcut of allShortcuts) {
-                try {
-                    const domain = new URL(shortcut.url).hostname.replace('www.', '');
-                    if (!seenDomains.has(domain)) {
-                        seenDomains.add(domain);
-                        uniqueShortcuts.push(shortcut);
-                    }
-                } catch {
-                    uniqueShortcuts.push(shortcut);
-                }
-            }
-
-            // Render shortcuts
-            uniqueShortcuts.slice(0, 11).forEach(shortcut => {
-                const div = document.createElement('a');
-                div.className = 'shortcut';
-                div.href = shortcut.url;
+            const is24h = document.getElementById('format-toggle').checked;
+            
+            // Time string
+            const options = { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: !is24h 
+            };
+            
+            let timeStr = now.toLocaleTimeString([], options);
+            
+            // Split out AM/PM if it exists
+            const ampmElement = document.getElementById('ampm');
+            if (!is24h) {
+                const parts = timeStr.split(' ');
+                // Some locales might put AM/PM inside or outside the string
+                const timeOnly = parts[0];
+                const ampm = parts[1] || '';
                 
-                const faviconUrl = getFaviconUrl(shortcut.url);
-                const iconHtml = faviconUrl 
-                    ? `<img src="${faviconUrl}" class="shortcut-favicon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                       <div class="shortcut-icon" style="display:none;">${getInitials(shortcut.name)}</div>`
-                    : `<div class="shortcut-icon">${getInitials(shortcut.name)}</div>`;
+                // Clean up leading zero for 12h
+                let displayTime = timeOnly;
+                if (displayTime.startsWith('0')) displayTime = displayTime.substring(1);
+                
+                document.getElementById('clock').textContent = displayTime;
+                ampmElement.textContent = ampm;
+                ampmElement.style.display = 'inline';
+            } else {
+                document.getElementById('clock').textContent = timeStr;
+                ampmElement.style.display = 'none';
+            }
+        }
 
-                div.innerHTML = `
-                    ${iconHtml}
-                    <span class="shortcut-name">${shortcut.name}</span>
-                    ${shortcut.visits ? `<span class="shortcut-visits">${shortcut.visits} visits</span>` : ''}
-                    ${!shortcut.auto ? '<button class="delete-btn" onclick="deleteShortcut(event, \'' + shortcut.url + '\')">×</button>' : ''}
-                `;
-                grid.appendChild(div);
+        function saveSettings() {
+            localStorage.setItem('clockFormat', document.getElementById('format-toggle').checked);
+            updateClock();
+        }
+
+        function renderShortcuts() {
+            const container = document.getElementById('shortcuts-container');
+            const addBtn = document.getElementById('add-btn');
+            
+            Array.from(container.children).forEach(child => {
+                if (child.id !== 'add-btn') child.remove();
             });
 
-            // Add "Add shortcut" button
-            const addBtn = document.createElement('div');
-            addBtn.className = 'add-shortcut-btn';
-            addBtn.innerHTML = `
-                <div class="add-icon">+</div>
-                <span class="shortcut-name">Add shortcut</span>
-            `;
-            addBtn.onclick = () => document.getElementById('addModal').classList.add('active');
-            grid.appendChild(addBtn);
+            shortcuts.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "shortcut group";
+                div.innerHTML = `
+                    <a href="${item.url}" class="block">${item.name}</a>
+                    <div class="remove-btn" onclick="removeShortcut(${index})">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                `;
+                container.insertBefore(div, addBtn);
+            });
         }
 
-        // Delete manual shortcut
-        window.deleteShortcut = function(event, url) {
-            event.preventDefault();
-            event.stopPropagation();
-            manualShortcuts = manualShortcuts.filter(s => s.url !== url);
-            localStorage.setItem('manualShortcuts', JSON.stringify(manualShortcuts));
-            renderShortcuts();
-        };
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            const isVisible = panel.style.display === 'block';
+            panel.style.display = isVisible ? 'none' : 'block';
+        }
 
-        // Search functionality
-        document.getElementById('searchBox').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const query = e.target.value.trim();
-                if (!query) return;
-
-                // Check if it's a URL
-                if (query.includes('.') && !query.includes(' ')) {
-                    const url = query.startsWith('http') ? query : 'https://' + query;
-                    window.location.href = url;
-                } else {
-                    window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-                }
+        function toggleRemoveMode() {
+            isRemoveMode = !isRemoveMode;
+            const container = document.getElementById('shortcuts-container');
+            const btnText = document.getElementById('remove-mode-text');
+            const btn = document.getElementById('remove-mode-btn');
+            
+            if (isRemoveMode) {
+                container.classList.add('remove-mode');
+                btnText.textContent = "Finish";
+                btn.classList.add('text-indigo-400');
+            } else {
+                container.classList.remove('remove-mode');
+                btnText.textContent = "Edit Shortcuts";
+                btn.classList.remove('text-indigo-400');
             }
-        });
+        }
 
-        // Modal handlers
-        document.getElementById('cancelBtn').addEventListener('click', () => {
-            document.getElementById('addModal').classList.remove('active');
-            document.getElementById('siteName').value = '';
-            document.getElementById('siteUrl').value = '';
-        });
-
-        document.getElementById('saveBtn').addEventListener('click', () => {
-            const name = document.getElementById('siteName').value.trim();
-            const url = document.getElementById('siteUrl').value.trim();
-
+        function removeShortcut(index) {
+            shortcuts.splice(index, 1);
+            localStorage.setItem('myShortcuts', JSON.stringify(shortcuts));
+            renderShortcuts();
+        }
+        
+        function addLink() {
+            if (isRemoveMode) return;
+            const name = prompt("Name:");
+            let url = prompt("URL:");
+            
             if (name && url) {
-                const fullUrl = url.startsWith('http') ? url : 'https://' + url;
-                manualShortcuts.unshift({ name, url: fullUrl, auto: false });
-                localStorage.setItem('manualShortcuts', JSON.stringify(manualShortcuts));
-                document.getElementById('addModal').classList.remove('active');
-                document.getElementById('siteName').value = '';
-                document.getElementById('siteUrl').value = '';
+                if (!url.startsWith('http')) url = 'https://' + url;
+                shortcuts.push({ name, url });
+                localStorage.setItem('myShortcuts', JSON.stringify(shortcuts));
                 renderShortcuts();
             }
-        });
+        }
 
-        // Close modal on background click
-        document.getElementById('addModal').addEventListener('click', (e) => {
-            if (e.target.id === 'addModal') {
-                document.getElementById('addModal').classList.remove('active');
-            }
-        });
-
-        // Initialize
-        updateTime();
-        updateGreeting();
-        setInterval(updateTime, 1000);
-        trackVisit();
-        renderShortcuts();
-
-        // Track outbound links
         document.addEventListener('click', (e) => {
-            const link = e.target.closest('a.shortcut');
-            if (link && link.href) {
-                try {
-                    const domain = new URL(link.href).hostname.replace('www.', '');
-                    if (!visitData[domain]) {
-                        visitData[domain] = { count: 0, lastVisit: Date.now(), url: link.href };
-                    }
-                    visitData[domain].count++;
-                    visitData[domain].lastVisit = Date.now();
-                    localStorage.setItem('visitData', JSON.stringify(visitData));
-                } catch (e) {}
+            const panel = document.getElementById('settings-panel');
+            const gearBtn = document.querySelector('.fa-gear')?.parentElement;
+            if (panel.style.display === 'block' && !panel.contains(e.target) && !gearBtn?.contains(e.target)) {
+                panel.style.display = 'none';
             }
         });
+
+        init();
     </script>
 </body>
 </html>
