@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Tab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(74, 86, 226, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 100, 200, 0.2) 0%, transparent 40%);
+            animation: float 15s ease-in-out infinite;
+            filter: blur(80px);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .time-section {
+            text-align: center;
+            margin-bottom: 70px;
+            color: white;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .time {
+            font-size: 120px;
+            font-weight: 200;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -4px;
+            line-height: 1.1;
+        }
+
+        .date {
+            font-size: 18px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .greeting {
+            font-size: 28px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: -0.5px;
+        }
+
+        .search-container {
+            margin-bottom: 60px;
+            display: flex;
+            justify-content: center;
+            animation: fadeIn 1s ease-out 0.2s backwards;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 680px;
+            padding: 20px 32px;
+            font-size: 17px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .search-box:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 12px 48px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 0 4px rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .shortcuts-section {
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-out 0.4s backwards;
+        }
+
+        .section-title {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .shortcut {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 28px 20px;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shortcut::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .shortcut:hover::before {
+            opacity: 1;
+        }
+
+        .shortcut:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .shortcut-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .shortcut:hover .shortcut-icon {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .shortcut-favicon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            object-fit: cover;
+            transition: all 0.3s;
+        }
+
+        .shortcut:hover .shortcut-favicon {
+            transform: scale(1.1);
+        }
+
+        .shortcut-name {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            word-break: break-word;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: -0.2px;
+        }
+
+        .shortcut-visits {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 500;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 50, 80, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .shortcut:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 30, 60, 1);
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 50, 80, 0.4);
+        }
+
+        .add-shortcut-btn {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 28px 20px;
+            color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-shortcut-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .add-shortcut-btn:hover::before {
+            opacity: 1;
+        }
+
+        .add-shortcut-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.8);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .add-icon {
+            font-size: 42px;
+            line-height: 1;
+            font-weight: 300;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.95) 0%, rgba(20, 20, 30, 0.95) 100%);
+            backdrop-filter: blur(40px);
+            padding: 48px;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 
+                0 24px 80px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-title {
+            font-size: 28px;
+            margin-bottom: 32px;
+            color: white;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: rgba(120, 119, 198, 0.6);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 0 0 4px rgba(120, 119, 198, 0.1),
+                0 8px 24px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 36px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7877c6 0%, #5a59a8 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(120, 119, 198, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #8887d7 0%, #6b6ab9 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(120, 119, 198, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .time {
+                font-size: 80px;
+                letter-spacing: -2px;
+            }
+
+            .date {
+                font-size: 14px;
+            }
+
+            .greeting {
+                font-size: 22px;
+            }
+
+            .search-box {
+                font-size: 16px;
+                padding: 18px 24px;
+            }
+
+            .shortcuts-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 12px;
+            }
+
+            .shortcut {
+                padding: 24px 16px;
+            }
+
+            .modal-content {
+                padding: 32px 24px;
+            }
+
+            .modal-title {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .time {
+                font-size: 64px;
+            }
+
+            .greeting {
+                font-size: 20px;
+            }
+
+            .shortcuts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="time-section">
+            <div class="greeting" id="greeting"></div>
+            <div class="time" id="time"></div>
+            <div class="date" id="date"></div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search Google or type a URL">
+        </div>
+
+        <div class="shortcuts-section">
+            <h2 class="section-title">Most Visited</h2>
+            <div class="shortcuts-grid" id="shortcutsGrid"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Add Shortcut</h2>
+            <div class="form-group">
+                <label for="siteName">Name</label>
+                <input type="text" id="siteName" placeholder="e.g., YouTube">
+            </div>
+            <div class="form-group">
+                <label for="siteUrl">URL</label>
+                <input type="url" id="siteUrl" placeholder="e.g., https://youtube.com">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize data structure
+        let visitData = JSON.parse(localStorage.getItem('visitData')) || {};
+        let manualShortcuts = JSON.parse(localStorage.getItem('manualShortcuts')) || [];
+
+        // Time and date display
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').textContent = `${hours}:${minutes}`;
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        // Greeting based on time
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = 'Good Evening';
+            if (hour < 12) greeting = 'Good Morning';
+            else if (hour < 18) greeting = 'Good Afternoon';
+            document.getElementById('greeting').textContent = greeting;
+        }
+
+        // Track current page visit
+        function trackVisit() {
+            const currentUrl = window.location.href;
+            if (currentUrl.includes('file://') || currentUrl.includes('start-page.html')) return;
+
+            const domain = new URL(currentUrl).hostname.replace('www.', '');
+            if (!visitData[domain]) {
+                visitData[domain] = { count: 0, lastVisit: Date.now(), url: currentUrl };
+            }
+            visitData[domain].count++;
+            visitData[domain].lastVisit = Date.now();
+            localStorage.setItem('visitData', JSON.stringify(visitData));
+        }
+
+        // Get favicon URL
+        function getFaviconUrl(url) {
+            try {
+                const domain = new URL(url).origin;
+                return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+            } catch {
+                return null;
+            }
+        }
+
+        // Get initials from name
+        function getInitials(name) {
+            return name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
+        }
+
+        // Render shortcuts
+        function renderShortcuts() {
+            const grid = document.getElementById('shortcutsGrid');
+            grid.innerHTML = '';
+
+            // Combine and sort all shortcuts
+            const autoShortcuts = Object.entries(visitData)
+                .map(([domain, data]) => ({
+                    name: domain,
+                    url: data.url,
+                    visits: data.count,
+                    auto: true
+                }))
+                .sort((a, b) => b.visits - a.visits)
+                .slice(0, 8);
+
+            const allShortcuts = [...manualShortcuts, ...autoShortcuts];
+            const uniqueShortcuts = [];
+            const seenDomains = new Set();
+
+            for (const shortcut of allShortcuts) {
+                try {
+                    const domain = new URL(shortcut.url).hostname.replace('www.', '');
+                    if (!seenDomains.has(domain)) {
+                        seenDomains.add(domain);
+                        uniqueShortcuts.push(shortcut);
+                    }
+                } catch {
+                    uniqueShortcuts.push(shortcut);
+                }
+            }
+
+            // Render shortcuts
+            uniqueShortcuts.slice(0, 11).forEach(shortcut => {
+                const div = document.createElement('a');
+                div.className = 'shortcut';
+                div.href = shortcut.url;
+                
+                const faviconUrl = getFaviconUrl(shortcut.url);
+                const iconHtml = faviconUrl 
+                    ? `<img src="${faviconUrl}" class="shortcut-favicon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                       <div class="shortcut-icon" style="display:none;">${getInitials(shortcut.name)}</div>`
+                    : `<div class="shortcut-icon">${getInitials(shortcut.name)}</div>`;
+
+                div.innerHTML = `
+                    ${iconHtml}
+                    <span class="shortcut-name">${shortcut.name}</span>
+                    ${shortcut.visits ? `<span class="shortcut-visits">${shortcut.visits} visits</span>` : ''}
+                    ${!shortcut.auto ? '<button class="delete-btn" onclick="deleteShortcut(event, \'' + shortcut.url + '\')">×</button>' : ''}
+                `;
+                grid.appendChild(div);
+            });
+
+            // Add "Add shortcut" button
+            const addBtn = document.createElement('div');
+            addBtn.className = 'add-shortcut-btn';
+            addBtn.innerHTML = `
+                <div class="add-icon">+</div>
+                <span class="shortcut-name">Add shortcut</span>
+            `;
+            addBtn.onclick = () => document.getElementById('addModal').classList.add('active');
+            grid.appendChild(addBtn);
+        }
+
+        // Delete manual shortcut
+        window.deleteShortcut = function(event, url) {
+            event.preventDefault();
+            event.stopPropagation();
+            manualShortcuts = manualShortcuts.filter(s => s.url !== url);
+            localStorage.setItem('manualShortcuts', JSON.stringify(manualShortcuts));
+            renderShortcuts();
+        };
+
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (!query) return;
+
+                // Check if it's a URL
+                if (query.includes('.') && !query.includes(' ')) {
+                    const url = query.startsWith('http') ? query : 'https://' + query;
+                    window.location.href = url;
+                } else {
+                    window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+                }
+            }
+        });
+
+        // Modal handlers
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('siteName').value = '';
+            document.getElementById('siteUrl').value = '';
+        });
+
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const name = document.getElementById('siteName').value.trim();
+            const url = document.getElementById('siteUrl').value.trim();
+
+            if (name && url) {
+                const fullUrl = url.startsWith('http') ? url : 'https://' + url;
+                manualShortcuts.unshift({ name, url: fullUrl, auto: false });
+                localStorage.setItem('manualShortcuts', JSON.stringify(manualShortcuts));
+                document.getElementById('addModal').classList.remove('active');
+                document.getElementById('siteName').value = '';
+                document.getElementById('siteUrl').value = '';
+                renderShortcuts();
+            }
+        });
+
+        // Close modal on background click
+        document.getElementById('addModal').addEventListener('click', (e) => {
+            if (e.target.id === 'addModal') {
+                document.getElementById('addModal').classList.remove('active');
+            }
+        });
+
+        // Initialize
+        updateTime();
+        updateGreeting();
+        setInterval(updateTime, 1000);
+        trackVisit();
+        renderShortcuts();
+
+        // Track outbound links
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a.shortcut');
+            if (link && link.href) {
+                try {
+                    const domain = new URL(link.href).hostname.replace('www.', '');
+                    if (!visitData[domain]) {
+                        visitData[domain] = { count: 0, lastVisit: Date.now(), url: link.href };
+                    }
+                    visitData[domain].count++;
+                    visitData[domain].lastVisit = Date.now();
+                    localStorage.setItem('visitData', JSON.stringify(visitData));
+                } catch (e) {}
+            }
+        });
+    </script>
+</body>
+</html>
